@@ -20,7 +20,6 @@ ST <|-- TS
 rectangle "Garage Management System" {
   usecase "Login 6" as L
   usecase "Logout 6" as LO
-  usecase "Change Password 6" as CP
   usecase "Search Service/Part\nInformation 6" as S
   usecase "Book Appointment 6" as B
   usecase "View Service Statistics 6" as M1
@@ -40,7 +39,6 @@ rectangle "Garage Management System" {
 }
 SM -- L
 SM -- LO
-SM -- CP
 C -- S
 C -- B
 B ..> L : <<include>>
