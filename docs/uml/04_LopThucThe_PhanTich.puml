@@ -1,0 +1,143 @@
+@startuml 04_LopThucThe_PhanTich
+!include _style.iuml
+left to right direction
+hide circle
+hide empty methods
+skinparam nodesep 25
+skinparam ranksep 45
+class SystemMember6 {
+  -username
+  -password
+  -name
+  -phone
+  -email
+  -address
+  -dob
+  -role
+}
+class Customer6 {
+  -customerCode
+}
+class Staff6 {
+  -staffCode
+  -position
+}
+class ManagementStaff6
+class SaleStaff6
+class WarehouseStaff6
+class TechnicalStaff6
+class Vehicle6 {
+  -licensePlate
+  -vehicleType
+  -brand
+  -model
+}
+class Appointment6 {
+  -appointmentCode
+  -appointmentDate
+  -status
+}
+class Reception6 {
+  -receptionCode
+  -checkInTime
+  -status
+}
+class Invoice6 {
+  -invoiceCode
+  -createdDate
+  -totalAmount
+}
+class ServiceDetail6 {
+  -quantity
+  -unitPrice
+  -subTotal
+}
+class SparePartDetail6 {
+  -quantity
+  -unitPrice
+  -subTotal
+}
+class Service6 {
+  -serviceCode
+  -name
+  -price
+  -status
+  -description
+  -supportedVehicleType
+  -warrantyPeriod
+}
+class SparePart6 {
+  -partCode
+  -name
+  -price
+  -stock
+  -description
+  -supportedVehicleType
+  -warrantyPeriod
+}
+class Supplier6 {
+  -supplierCode
+  -name
+  -phone
+  -address
+  -email
+}
+class ImportInvoice6 {
+  -importCode
+  -importDate
+  -totalAmount
+}
+class ImportDetail6 {
+  -quantity
+  -unitPrice
+  -subTotal
+}
+class CustomerStatistic6 {
+  -totalRevenue
+  -startDate
+  -endDate
+}
+class ServiceStatistic6 {
+  -totalUsage
+  -totalRevenue
+  -startDate
+  -endDate
+}
+class SparePartStatistic6 {
+  -totalSold
+  -totalRevenue
+  -startDate
+  -endDate
+}
+class SupplierStatistic6 {
+  -totalImportedQuantity
+  -totalImportAmount
+  -startDate
+  -endDate
+}
+SystemMember6 <|-- Customer6
+SystemMember6 <|-- Staff6
+Staff6 <|-- ManagementStaff6
+Staff6 <|-- SaleStaff6
+Staff6 <|-- WarehouseStaff6
+Staff6 <|-- TechnicalStaff6
+Customer6 <|-- CustomerStatistic6
+Service6 <|-- ServiceStatistic6
+SparePart6 <|-- SparePartStatistic6
+Supplier6 <|-- SupplierStatistic6
+Customer6 "1" --o "0..*" Vehicle6
+Vehicle6 "1" --o "0..*" Appointment6
+Vehicle6 "1" --o "0..*" Reception6
+Appointment6 "0..1" --o "0..1" Reception6
+SaleStaff6 "1" --o "0..*" Reception6
+Reception6 "1" --o "0..1" Invoice6
+Invoice6 "1" *-- "1..*" ServiceDetail6
+Invoice6 "1" *-- "0..*" SparePartDetail6
+Service6 "1" --o "0..*" ServiceDetail6
+TechnicalStaff6 "1" --o "0..*" ServiceDetail6
+SparePart6 "1" --o "0..*" SparePartDetail6
+Supplier6 "1" --o "0..*" ImportInvoice6
+WarehouseStaff6 "1" --o "0..*" ImportInvoice6
+ImportInvoice6 "1" *-- "1..*" ImportDetail6
+SparePart6 "1" --o "0..*" ImportDetail6
+@enduml

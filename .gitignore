@@ -1,0 +1,8 @@
+target/
+.vscode/
+.settings/
+.classpath
+.project
+bin/
+_to_delete/
+Claude outputs/

@@ -1,0 +1,9 @@
+@startuml 07_TrangThai_Module1
+!include _style.iuml
+[*] --> HienThiGDChinhKH
+HienThiGDChinhKH --> HienThiGDTimKiem : [chọn Tìm kiếm DV/PT]
+HienThiGDTimKiem --> HienThiGDTimKiem : [nhập từ khóa &\nclick Tìm kiếm]
+HienThiGDTimKiem --> HienThiGDChiTiet : [click chọn 1 dòng kết quả]
+HienThiGDChiTiet --> HienThiGDTimKiem : [click Quay lại]
+HienThiGDTimKiem --> HienThiGDChinhKH : [click Quay lại trang chủ]
+@enduml

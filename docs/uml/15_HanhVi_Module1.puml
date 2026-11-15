@@ -1,0 +1,52 @@
+@startuml 15_HanhVi_Module1
+!include _style.iuml
+skinparam defaultFontSize 12
+|Khách hàng|
+start
+:Click chọn chức năng Tìm kiếm DV/PT
+(tại gdChinhKH6.jsp, không cần đăng nhập);
+|Hệ thống JSP và DAO|
+:gdChinhKH6.jsp chuyển sang gdTimKiem6.jsp;
+:gdTimKiem6.jsp hiển thị ô nhập từ khóa;
+|Khách hàng|
+:Nhập từ khóa và click Tìm kiếm;
+|Hệ thống JSP và DAO|
+if (Từ khóa rỗng?) then (có)
+  :Báo "Vui lòng nhập tên dịch vụ/phụ tùng";
+  stop
+else (không)
+endif
+:ServiceDAO6.searchService(keyword)
+→ List<Service6>;
+:SparePartDAO6.searchSparePart(keyword)
+→ List<SparePart6>;
+if (Có kết quả?) then (không)
+  :Báo "Không tìm thấy kết quả phù hợp";
+  stop
+else (có)
+  :Gộp và hiển thị bảng DV/PT;
+endif
+|Khách hàng|
+:Click chọn 1 dòng DV hoặc PT;
+|Hệ thống JSP và DAO|
+:gdChiTiet6.jsp nhận id và loai;
+if (loai == "SERVICE"?) then (đúng)
+  :ServiceDAO6.getServiceDetail(id)
+  → Service6;
+else (sai)
+  :SparePartDAO6.getSparePartDetail(id)
+  → SparePart6;
+endif
+:Hiển thị chi tiết (giá, tình trạng,
+dòng xe, bảo hành, mô tả)
++ cảnh báo nếu hết hàng / ngừng cung cấp;
+|Khách hàng|
+if (Click Quay lại?) then (có)
+  |Hệ thống JSP và DAO|
+  :Hiển thị lại gdTimKiem6.jsp
+  với kết quả cũ;
+  stop
+else (không)
+  stop
+endif
+@enduml

@@ -1,0 +1,73 @@
+@startuml 19_Package
+!include _style.iuml
+skinparam nodesep 25
+skinparam ranksep 50
+package "view" as view {
+  folder tv [
+    <b>thanhvien</b>
+    ----
+    gdDangNhap6.jsp
+    doDangNhap6.jsp
+    doDangXuat6.jsp
+  ]
+  folder kh [
+    <b>khachhang</b>
+    ----
+    gdChinhKH6.jsp
+    gdTimKiem6.jsp
+    gdChiTiet6.jsp
+    gdDatLich6.jsp <i>(*)</i>
+  ]
+  folder ql [
+    <b>quanly</b>
+    ----
+    gdChinhQL6.jsp
+    gdChonThongKe6.jsp
+    gdKetQuaThongKe6.jsp
+    gdDSHoaDon6.jsp
+    gdChiTietHoaDon6.jsp
+  ]
+  folder bh [
+    <b>banhang</b> <i>(*)</i>
+    ----
+    gdChinhBanHang6.jsp
+    gdTiepNhan6.jsp
+  ]
+  folder k [
+    <b>kho</b> <i>(*)</i>
+    ----
+    gdChinhKho6.jsp
+    gdNhapKho6.jsp
+  ]
+}
+package "dao" as dao {
+  folder d [
+    <b>dao</b>
+    ----
+    DAO6
+    SystemMemberDAO6
+    ServiceDAO6
+    SparePartDAO6
+    CustomerStatisticDAO6
+    InvoiceDAO6
+  ]
+}
+package "model" as model {
+  folder m [
+    <b>model</b>
+    ----
+    SystemMember6, Customer6, Staff6, ...
+    CustomerStatistic6
+    Service6, SparePart6
+    Vehicle6, Reception6
+    Invoice6, ServiceDetail6, SparePartDetail6
+  ]
+}
+view ..> dao : <<import>>
+view ..> model : <<import>>
+dao ..> model : <<import>>
+legend bottom left
+  (*) Thuộc thiết kế tổng thể, chưa cài đặt
+  (ngoài phạm vi 2 module của bài)
+endlegend
+@enduml

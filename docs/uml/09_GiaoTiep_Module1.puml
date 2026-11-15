@@ -1,0 +1,28 @@
+@startuml 09_GiaoTiep_Module1
+!include _style.iuml
+
+skinparam nodesep 20
+skinparam ranksep 40
+actor "Customer" as KH
+rectangle "<<boundary>>\nGDChinhKH6" as GDC
+rectangle "<<boundary>>\nGDTimKiem6" as GDT
+rectangle "<<boundary>>\nGDChiTiet6" as GDCT
+rectangle "<<entity>>\nService6" as SV
+rectangle "<<entity>>\nSparePart6" as SP
+KH --> GDC : 1: click chọn\nTìm kiếm DV/PT
+GDC --> GDT : 2: gọi
+GDT --> KH : 3: hiển thị giao diện\n9: hiển thị DS kết quả
+KH --> GDT : 4: nhập từ khóa, click Tìm kiếm\n10: click chọn 1 bản ghi
+GDT --> SV : 5: gọi
+SV --> GDT : 6: getDSKetQua(),\ntrả kết quả
+GDT --> SP : 7: gọi
+SP --> GDT : 8: getDSKetQua(),\ntrả kết quả
+GDT --> GDCT : 11: gọi
+GDCT --> SV : 12: getChiTiet()\n(nếu là dịch vụ)
+GDCT --> SP : 12: getChiTiet()\n(nếu là phụ tùng)
+SV --> GDCT : 13: trả đối tượng
+SP --> GDCT : 13: trả đối tượng
+GDCT --> KH : 14: hiển thị chi tiết
+KH --> GDCT : 15: click Quay lại
+GDCT --> GDT : 16: gọi lại
+@enduml

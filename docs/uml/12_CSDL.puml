@@ -1,0 +1,180 @@
+@startuml 12_CSDL
+!include _style.iuml
+hide circle
+hide empty members
+
+skinparam linetype ortho
+skinparam nodesep 25
+skinparam ranksep 50
+skinparam classFontSize 13
+skinparam classAttributeFontSize 12
+entity tblSystemMember6 {
+  *id : integer(10) <<PK>>
+  --
+  username : varchar(50)
+  password : varchar(50)
+  name : varchar(100)
+  phone : varchar(15)
+  email : varchar(100)
+  address : varchar(255)
+  dob : date
+  role : varchar(30)
+}
+entity tblCustomer6 {
+  *id : integer(10) <<PK>>
+  --
+  customerCode : varchar(20)
+  tblSystemMember6id <<FK>>
+}
+entity tblStaff6 {
+  *id : integer(10) <<PK>>
+  --
+  staffCode : varchar(20)
+  position : varchar(50)
+  tblSystemMember6id <<FK>>
+}
+entity tblManagementStaff6 {
+  *id <<PK>>
+  --
+  tblStaff6id <<FK>>
+}
+entity tblSaleStaff6 {
+  *id <<PK>>
+  --
+  tblStaff6id <<FK>>
+}
+entity tblWarehouseStaff6 {
+  *id <<PK>>
+  --
+  tblStaff6id <<FK>>
+}
+entity tblTechnicalStaff6 {
+  *id <<PK>>
+  --
+  tblStaff6id <<FK>>
+}
+entity tblVehicle6 {
+  *id <<PK>>
+  --
+  licensePlate : varchar(20)
+  vehicleType : varchar(50)
+  brand : varchar(50)
+  model : varchar(50)
+  tblCustomer6id <<FK>>
+}
+entity tblAppointment6 {
+  *id <<PK>>
+  --
+  appointmentCode : varchar(20)
+  appointmentDate : datetime
+  status : varchar(30)
+  tblVehicle6id <<FK>>
+}
+entity tblReception6 {
+  *id <<PK>>
+  --
+  receptionCode : varchar(20)
+  checkInTime : datetime
+  status : varchar(30)
+  tblVehicle6id <<FK>>
+  tblAppointment6id <<FK>> (null)
+  tblSaleStaff6id <<FK>>
+}
+entity tblService6 {
+  *id <<PK>>
+  --
+  serviceCode : varchar(20)
+  name : varchar(100)
+  description : varchar(255)
+  price : decimal(12,2)
+  status : varchar(30)
+  supportedVehicleType : varchar(100)
+  warrantyPeriod : integer(10)
+}
+entity tblSparePart6 {
+  *id <<PK>>
+  --
+  partCode : varchar(20)
+  name : varchar(100)
+  description : varchar(255)
+  price : decimal(12,2)
+  stock : integer(10)
+  supportedVehicleType : varchar(100)
+  warrantyPeriod : integer(10)
+}
+entity tblInvoice6 {
+  *id <<PK>>
+  --
+  invoiceCode : varchar(20)
+  createdDate : datetime
+  totalAmount : decimal(12,2)
+  tblReception6id <<FK>> (unique)
+}
+entity tblServiceDetail6 {
+  *id <<PK>>
+  --
+  quantity : integer(10)
+  unitPrice : decimal(12,2)
+  subTotal : decimal(12,2)
+  tblInvoice6id <<FK>>
+  tblService6id <<FK>>
+  tblTechnicalStaff6id <<FK>>
+}
+entity tblSparePartDetail6 {
+  *id <<PK>>
+  --
+  quantity : integer(10)
+  unitPrice : decimal(12,2)
+  subTotal : decimal(12,2)
+  tblInvoice6id <<FK>>
+  tblSparePart6id <<FK>>
+}
+entity tblSupplier6 {
+  *id <<PK>>
+  --
+  supplierCode : varchar(20)
+  name : varchar(100)
+  address : varchar(255)
+  phone : varchar(15)
+  email : varchar(100)
+}
+entity tblImportInvoice6 {
+  *id <<PK>>
+  --
+  importCode : varchar(20)
+  importDate : datetime
+  totalAmount : decimal(12,2)
+  tblSupplier6id <<FK>>
+  tblWarehouseStaff6id <<FK>>
+}
+entity tblImportDetail6 {
+  *id <<PK>>
+  --
+  quantity : integer(10)
+  unitPrice : decimal(12,2)
+  subTotal : decimal(12,2)
+  tblImportInvoice6id <<FK>>
+  tblSparePart6id <<FK>>
+}
+tblSystemMember6 ||--o| tblCustomer6
+tblSystemMember6 ||--o| tblStaff6
+tblStaff6 ||--o| tblManagementStaff6
+tblStaff6 ||--o| tblSaleStaff6
+tblStaff6 ||--o| tblWarehouseStaff6
+tblStaff6 ||--o| tblTechnicalStaff6
+tblCustomer6 ||--o{ tblVehicle6
+tblVehicle6 ||--o{ tblAppointment6
+tblVehicle6 ||--o{ tblReception6
+tblAppointment6 |o--o| tblReception6
+tblSaleStaff6 ||--o{ tblReception6
+tblReception6 ||--o| tblInvoice6
+tblInvoice6 ||--|{ tblServiceDetail6
+tblInvoice6 ||--o{ tblSparePartDetail6
+tblService6 ||--o{ tblServiceDetail6
+tblTechnicalStaff6 ||--o{ tblServiceDetail6
+tblSparePart6 ||--o{ tblSparePartDetail6
+tblSupplier6 ||--o{ tblImportInvoice6
+tblWarehouseStaff6 ||--o{ tblImportInvoice6
+tblImportInvoice6 ||--|{ tblImportDetail6
+tblSparePart6 ||--o{ tblImportDetail6
+@enduml

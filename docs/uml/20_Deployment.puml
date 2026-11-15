@@ -1,0 +1,27 @@
+@startuml 20_Deployment
+!include _style.iuml
+left to right direction
+node "<<device>>\nClient\n(PC / Laptop / Điện thoại)" as CL {
+  node "<<executionEnvironment>>\nWeb Browser\n(Chrome / Edge / Safari)" as BR {
+    component "HTML/CSS\n(JSP đã render)" as HTML
+  }
+}
+node "<<device>>\nApplication Server" as AS {
+  node "<<executionEnvironment>>\nApache Tomcat 10.1\n(Jakarta EE / JSP Container)" as TC {
+    artifact "GarageManagement.war" as WAR {
+      folder "view (JSP)" as V
+      folder "dao (JDBC)" as D
+      folder "model (Entity)" as M
+    }
+  }
+}
+node "<<device>>\nDatabase Server" as DS {
+  node "<<executionEnvironment>>\nMySQL Server 8.0" as MY {
+    database "garage_db6\n(18 bảng)" as DB
+  }
+}
+V ..> D
+D ..> M
+BR "1..*" -- "1" TC : HTTP\n(port 8080)
+TC "1" -- "1" MY : JDBC / TCP-IP\n(port 3306)
+@enduml

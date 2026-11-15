@@ -1,0 +1,27 @@
+@startuml 03_UC_Module2
+!include _style.iuml
+left to right direction
+actor "System Member" as SM
+actor "Staff" as ST
+actor "Management Staff" as MS
+SM <|-- ST
+ST <|-- MS
+rectangle "Garage Management System" {
+  usecase "View Customer\nStatistic 6" as UC0
+  usecase "Login 6" as L
+  usecase "Select Statistical\nReports 6" as U1
+  usecase "Select Customer Statistics\nby Revenue 6" as U2
+  usecase "Select Statistics\nPeriod 6" as U3
+  usecase "View Customer Revenue\nStatistics 6" as U4
+  usecase "View Customer\nInvoices 6" as U5
+  usecase "View Invoice\nDetails 6" as U6
+}
+MS -- UC0
+UC0 ..> L : <<include>>
+UC0 ..> U1 : <<include>>
+UC0 ..> U2 : <<include>>
+UC0 ..> U3 : <<include>>
+UC0 ..> U4 : <<include>>
+U5 ..> U4 : <<extend>>
+U6 ..> U5 : <<extend>>
+@enduml

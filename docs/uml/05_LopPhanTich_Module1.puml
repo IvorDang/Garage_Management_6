@@ -1,0 +1,43 @@
+@startuml 05_LopPhanTich_Module1
+!include _style.iuml
+left to right direction
+hide circle
+class GDChinhKH6 <<boundary>> {
+  -subTimKiem : link
+}
+class GDTimKiem6 <<boundary>> {
+  -inTuKhoa : text
+  -subXacNhan : submit
+  -outsubDSKetQua : Table
+}
+class GDChiTiet6 <<boundary>> {
+  -outThongTin : text
+  -subQuayLai : button
+}
+class Service6 <<entity>> {
+  -serviceCode
+  -name
+  -price
+  -status
+  -supportedVehicleType
+  -warrantyPeriod
+  +getDSKetQua(tuKhoa)
+  +getChiTiet(maDVPT)
+}
+class SparePart6 <<entity>> {
+  -partCode
+  -name
+  -price
+  -stock
+  -supportedVehicleType
+  -warrantyPeriod
+  +getDSKetQua(tuKhoa)
+  +getChiTiet(maDVPT)
+}
+GDChinhKH6 ..> GDTimKiem6 : calls
+GDTimKiem6 ..> GDChiTiet6 : calls
+GDTimKiem6 --> Service6 : requests
+GDTimKiem6 --> SparePart6 : requests
+GDChiTiet6 --> Service6 : requests
+GDChiTiet6 --> SparePart6 : requests
+@enduml

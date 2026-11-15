@@ -1,0 +1,92 @@
+@startuml 06_LopPhanTich_Module2
+!include _style.iuml
+hide circle
+skinparam nodesep 30
+skinparam ranksep 40
+class GDChinhQL6 <<boundary>> {
+  -subXemThongKe : link
+}
+class GDChonThongKe6 <<boundary>> {
+  -inLoaiTK : Select
+  -inTuNgay : Date
+  -inDenNgay : Date
+  -subTimKiem : submit
+}
+class GDKetQuaThongKe6 <<boundary>> {
+  -outsubDSKhachHang : Table
+  -subQuayLai : button
+}
+class GDDSHoaDon6 <<boundary>> {
+  -outsubDSHoaDon : Table
+  -subQuayLai : button
+}
+class GDChiTietHoaDon6 <<boundary>> {
+  -outThongTinChung : text
+  -outChiTietDichVu : Table
+  -outChiTietPhuTung : Table
+  -subQuayLai : button
+}
+class SystemMember6 <<entity>> {
+  -name
+  -phone
+  -email
+}
+class Customer6 <<entity>> {
+  -customerCode
+}
+class CustomerStatistic6 <<entity>> {
+  -totalRevenue
+  -startDate
+  -endDate
+  +getThongKeKhachHang(tuNgay, denNgay)
+}
+class Vehicle6 <<entity>> {
+  -licensePlate
+}
+class Reception6 <<entity>> {
+  -receptionCode
+}
+class Invoice6 <<entity>> {
+  -invoiceCode
+  -createdDate
+  -totalAmount
+  +getDSHoaDon(maKH, tuNgay, denNgay)
+  +getChiTietHD(maHD)
+}
+class ServiceDetail6 <<entity>> {
+  -quantity
+  -unitPrice
+  -subTotal
+}
+class SparePartDetail6 <<entity>> {
+  -quantity
+  -unitPrice
+  -subTotal
+}
+class Service6 <<entity>> {
+  -serviceCode
+  -name
+}
+class SparePart6 <<entity>> {
+  -partCode
+  -name
+}
+class TechnicalStaff6 <<entity>>
+GDChinhQL6 ..> GDChonThongKe6 : calls
+GDChonThongKe6 ..> GDKetQuaThongKe6 : calls
+GDKetQuaThongKe6 ..> GDDSHoaDon6 : calls
+GDDSHoaDon6 ..> GDChiTietHoaDon6 : calls
+GDKetQuaThongKe6 --> CustomerStatistic6 : requests
+GDDSHoaDon6 --> Invoice6 : requests
+GDChiTietHoaDon6 --> Invoice6 : requests
+SystemMember6 <|-- Customer6
+Customer6 <|-- CustomerStatistic6
+Customer6 "1" --o "0..*" Vehicle6
+Vehicle6 "1" --o "0..*" Reception6
+Reception6 "1" --o "0..1" Invoice6
+Invoice6 "1" *-- "1..*" ServiceDetail6
+Invoice6 "1" *-- "0..*" SparePartDetail6
+Service6 "1" --o "0..*" ServiceDetail6
+TechnicalStaff6 "1" --o "0..*" ServiceDetail6
+SparePart6 "1" --o "0..*" SparePartDetail6
+@enduml

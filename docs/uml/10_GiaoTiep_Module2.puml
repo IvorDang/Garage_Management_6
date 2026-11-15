@@ -1,0 +1,32 @@
+@startuml 10_GiaoTiep_Module2
+!include _style.iuml
+
+skinparam nodesep 20
+skinparam ranksep 40
+actor "Management Staff" as QL
+rectangle "<<boundary>>\nGDChinhQL6" as A
+rectangle "<<boundary>>\nGDChonThongKe6" as B
+rectangle "<<boundary>>\nGDKetQuaThongKe6" as C
+rectangle "<<boundary>>\nGDDSHoaDon6" as D
+rectangle "<<boundary>>\nGDChiTietHoaDon6" as E
+rectangle "<<entity>>\nCustomerStatistic6" as CS
+rectangle "<<entity>>\nInvoice6" as I
+QL --> A : 1: click Xem báo cáo thống kê
+A --> B : 2: gọi
+B --> QL : 3: hiển thị
+QL --> B : 4: chọn loại, nhập ngày,\nclick Tìm kiếm
+B --> C : 5: gọi
+C --> CS : 6: gọi
+CS --> C : 7: getThongKeKhachHang()\n8: trả DS thống kê
+C --> QL : 8: hiển thị DS thống kê
+QL --> C : 9: click chọn 1 khách hàng
+C --> D : 10: gọi
+D --> I : 11: gọi
+I --> D : 12: getDSHoaDon()\n13: trả DS hóa đơn
+D --> QL : 14: hiển thị DS hóa đơn
+QL --> D : 15: click chọn 1 hóa đơn
+D --> E : 16: gọi
+E --> I : 17: gọi
+I --> E : 18: getChiTietHD()\n19: trả đối tượng hóa đơn
+E --> QL : 20: hiển thị chi tiết hóa đơn
+@enduml

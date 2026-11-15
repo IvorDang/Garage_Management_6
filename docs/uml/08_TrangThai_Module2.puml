@@ -1,0 +1,12 @@
+@startuml 08_TrangThai_Module2
+!include _style.iuml
+[*] --> HienThiGDChinhQL
+HienThiGDChinhQL --> HienThiGDChonThongKe : [chọn xem thống kê]
+HienThiGDChonThongKe --> HienThiGDChinhQL : [click Quay lại]
+HienThiGDChonThongKe --> HienThiGDKetQuaThongKe : [nhập thời gian &\nclick Tìm kiếm]
+HienThiGDKetQuaThongKe --> HienThiGDChonThongKe : [click Quay lại]
+HienThiGDKetQuaThongKe --> HienThiGDDSHoaDon : [click chọn 1 khách hàng]
+HienThiGDDSHoaDon --> HienThiGDKetQuaThongKe : [click Quay lại]
+HienThiGDDSHoaDon --> HienThiGDChiTietHoaDon : [click chọn 1 hóa đơn]
+HienThiGDChiTietHoaDon --> HienThiGDDSHoaDon : [click Quay lại]
+@enduml

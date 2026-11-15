@@ -1,0 +1,76 @@
+@startuml 17_TuanTu_Module1
+!include _style.iuml
+skinparam defaultFontSize 12
+skinparam ParticipantPadding 4
+skinparam BoxPadding 2
+skinparam sequenceMessageAlign center
+hide footbox
+skinparam maxMessageSize 110
+actor "Customer" as KH
+boundary "gdChinhKH6\n.jsp" as C
+boundary "gdTimKiem6\n.jsp" as T
+boundary "gdChiTiet6\n.jsp" as CT
+control "ServiceDAO6" as SD
+entity "Service6" as S
+control "SparePartDAO6" as PD
+entity "SparePart6" as P
+KH -> C : 1: click Tìm kiếm DV/PT
+activate C
+C -> T : 2: gọi trang
+deactivate C
+activate T
+T --> KH : 3: hiển thị giao diện\ntìm kiếm
+KH -> T : 4: nhập từ khóa,\nclick Tìm kiếm
+T -> T : 5: submit gọi\nlại chính nó
+T -> SD : 6: yêu cầu tìm DV
+activate SD
+SD -> SD : 7: searchService\n(keyword)
+SD -> S : 8: đóng gói
+activate S
+S --> SD : 9: trả thực thể
+deactivate S
+SD --> T : 10: List<Service6>
+deactivate SD
+T -> PD : 11: yêu cầu tìm PT
+activate PD
+PD -> PD : 12: searchSparePart\n(keyword)
+PD -> P : 13: đóng gói
+activate P
+P --> PD : 14: trả thực thể
+deactivate P
+PD --> T : 15: List<SparePart6>
+deactivate PD
+T --> KH : 16: hiển thị bảng kết quả
+KH -> T : 17: click chọn 1 bản ghi
+T -> CT : 18: gọi trang (id, loai)
+deactivate T
+activate CT
+alt 19: loai == "SERVICE"
+  CT -> SD : 19.1: yêu cầu chi tiết DV
+  activate SD
+  SD -> SD : 19.2: getService\nDetail(id)
+  SD -> S : 19.3: đóng gói
+  activate S
+  S --> SD : 19.4: trả thực thể
+  deactivate S
+  SD --> CT : 19.5: Service6
+  deactivate SD
+else 20: loai == "SPAREPART"
+  CT -> PD : 20.1: yêu cầu chi tiết PT
+  activate PD
+  PD -> PD : 20.2: getSparePart\nDetail(id)
+  PD -> P : 20.3: đóng gói
+  activate P
+  P --> PD : 20.4: trả thực thể
+  deactivate P
+  PD --> CT : 20.5: SparePart6
+  deactivate PD
+end
+CT --> KH : 21: hiển thị chi tiết
+KH -> CT : 22: click Quay lại
+CT -> T : 23: gọi lại trang\ntìm kiếm
+deactivate CT
+activate T
+T --> KH : 24: hiển thị lại kết quả cũ
+deactivate T
+@enduml

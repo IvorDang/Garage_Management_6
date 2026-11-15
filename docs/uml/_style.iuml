@@ -1,0 +1,7 @@
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName "DejaVu Sans"
+skinparam defaultFontSize 13
+skinparam classAttributeIconSize 0
+skinparam packageStyle folder
+skinparam roundCorner 6

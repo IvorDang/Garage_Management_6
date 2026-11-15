@@ -1,0 +1,21 @@
+@startuml 02_UC_Module1
+!include _style.iuml
+left to right direction
+actor "Customer" as C
+rectangle "Garage Management System" {
+  usecase "Search Service/Part\nInformation 6" as S
+  usecase "Select Search\nService/Part 6" as U1
+  usecase "Enter Service/Part\nName 6" as U2
+  usecase "View Service/Part\nSearch Results 6" as U3
+  usecase "View Service/Part\nDetails 6" as U4
+}
+C -- S
+S ..> U1 : <<include>>
+S ..> U2 : <<include>>
+S ..> U3 : <<include>>
+U4 ..> U3 : <<extend>>
+note bottom of S
+  Không include Login 6: khách vãng lai /
+  chưa đăng nhập vẫn tìm kiếm và xem chi tiết.
+end note
+@enduml

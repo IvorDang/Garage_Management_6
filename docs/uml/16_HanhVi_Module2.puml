@@ -1,0 +1,46 @@
+@startuml 16_HanhVi_Module2
+!include _style.iuml
+skinparam defaultFontSize 12
+|Nhân viên quản lý|
+start
+:Click menu Xem báo cáo thống kê
+(tại gdChinhQL6.jsp, sau khi đăng nhập);
+|Hệ thống JSP và DAO|
+:gdChinhQL6.jsp chuyển sang gdChonThongKe6.jsp;
+:Hiển thị chọn loại thống kê và thời gian;
+|Nhân viên quản lý|
+:Chọn TK khách hàng theo doanh thu,
+nhập ngày bắt đầu/kết thúc, click Tìm kiếm;
+|Hệ thống JSP và DAO|
+if (Ngày hợp lệ?) then (không)
+  :Báo lỗi: thiếu ngày, ngày không tồn tại
+  hoặc ngày bắt đầu lớn hơn ngày kết thúc;
+  stop
+else (có)
+endif
+:CustomerStatisticDAO6.getCustomerStatistic
+(startDate, endDate) → List<CustomerStatistic6>;
+:Hiển thị bảng khách hàng theo doanh thu
+(giảm dần; rỗng thì báo "Không có dữ liệu");
+|Nhân viên quản lý|
+:Click chọn 1 khách hàng;
+|Hệ thống JSP và DAO|
+:InvoiceDAO6.getInvoicesByCustomer
+(customerId, startDate, endDate) → List<Invoice6>;
+:Hiển thị danh sách hóa đơn của khách hàng;
+|Nhân viên quản lý|
+:Click chọn 1 hóa đơn;
+|Hệ thống JSP và DAO|
+:InvoiceDAO6.getInvoiceDetail(invoiceId)
+→ Invoice6 kèm ServiceDetail6, SparePartDetail6;
+:Hiển thị thông tin chung,
+bảng dịch vụ và bảng phụ tùng;
+|Nhân viên quản lý|
+if (Click Quay lại?) then (có)
+  |Hệ thống JSP và DAO|
+  :Hiển thị lại trang trước đó;
+  stop
+else (không)
+  stop
+endif
+@enduml

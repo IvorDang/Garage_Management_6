@@ -1,0 +1,65 @@
+@startuml 01_UC_TongQuan
+!include _style.iuml
+left to right direction
+skinparam usecaseFontSize 13
+skinparam nodesep 3
+skinparam ranksep 50
+actor "System Member" as SM
+actor "Customer" as C
+actor "Staff" as ST
+actor "Management Staff" as MS
+actor "Sales Staff" as SS
+actor "Warehouse Staff" as WS
+actor "Technical Staff" as TS
+SM <|-- C
+SM <|-- ST
+ST <|-- MS
+ST <|-- SS
+ST <|-- WS
+ST <|-- TS
+rectangle "Garage Management System" {
+  usecase "Login 6" as L
+  usecase "Logout 6" as LO
+  usecase "Change Password 6" as CP
+  usecase "Search Service/Part\nInformation 6" as S
+  usecase "Book Appointment 6" as B
+  usecase "View Service Statistics 6" as M1
+  usecase "View Spare Part Statistics 6" as M2
+  usecase "View Customer Statistics 6" as M3
+  usecase "View Supplier Statistics 6" as M4
+  usecase "Manage Services 6" as M5
+  usecase "Manage Spare Parts 6" as M6
+  usecase "Receive Customers 6" as S1
+  usecase "Receive Service Requests 6" as S2
+  usecase "Receive Spare Part Requests 6" as S3
+  usecase "Assign Technical Staff 6" as S4
+  usecase "Receive Payment 6" as S5
+  usecase "Import Spare Parts 6" as W1
+  usecase "Manage Suppliers 6" as W2
+  usecase "Receive Tasks from\nSales Staff 6" as T1
+}
+SM -- L
+SM -- LO
+SM -- CP
+C -- S
+C -- B
+B ..> L : <<include>>
+MS -- M1
+MS -- M2
+MS -- M3
+MS -- M4
+MS -- M5
+MS -- M6
+SS -- S1
+SS -- S2
+SS -- S3
+SS -- S4
+SS -- S5
+WS -- W1
+WS -- W2
+TS -- T1
+note right of S
+  Không cần đăng nhập
+  (khách vãng lai vẫn dùng được)
+end note
+@enduml

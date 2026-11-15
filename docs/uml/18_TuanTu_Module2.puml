@@ -1,0 +1,66 @@
+@startuml 18_TuanTu_Module2
+!include _style.iuml
+skinparam defaultFontSize 12
+skinparam ParticipantPadding 2
+skinparam sequenceMessageAlign center
+hide footbox
+actor "Quản lý" as QL
+boundary "gdChinhQL6\n.jsp" as A
+boundary "gdChonThongKe6\n.jsp" as B
+boundary "gdKetQuaThongKe6\n.jsp" as C
+boundary "gdDSHoaDon6\n.jsp" as D
+boundary "gdChiTietHoaDon6\n.jsp" as E
+control "CustomerStatistic\nDAO6" as CSD
+entity "Customer\nStatistic6" as CS
+control "InvoiceDAO6" as ID
+entity "Invoice6" as I
+QL -> A : 1: click Xem\nbáo cáo thống kê
+activate A
+A -> B : 2: gọi trang
+deactivate A
+activate B
+B --> QL : 3: hiển thị
+QL -> B : 4: chọn loại TK,\nnhập ngày, Tìm kiếm
+B -> C : 5: gọi trang\n(startDate, endDate)
+deactivate B
+activate C
+C -> CSD : 6: yêu cầu thống kê
+activate CSD
+CSD -> CSD : 7: getCustomer\nStatistic(...)
+CSD -> CS : 8: đóng gói
+activate CS
+CS --> CSD : 9: trả thực thể
+deactivate CS
+CSD --> C : 10: List<Customer\nStatistic6>
+deactivate CSD
+C --> QL : 11: hiển thị bảng thống kê
+QL -> C : 12: click chọn 1 KH
+C -> D : 13: gọi trang\n(customerId, ngày)
+deactivate C
+activate D
+D -> ID : 14: yêu cầu DS hóa đơn
+activate ID
+ID -> ID : 15: getInvoices\nByCustomer(...)
+ID -> I : 16: đóng gói
+activate I
+I --> ID : 17: trả thực thể
+deactivate I
+ID --> D : 18: List<Invoice6>
+deactivate ID
+D --> QL : 19: hiển thị DS hóa đơn
+QL -> D : 20: click chọn 1 HĐ
+D -> E : 21: gọi trang (invoiceId)
+deactivate D
+activate E
+E -> ID : 22: yêu cầu chi tiết HĐ
+activate ID
+ID -> ID : 23: getInvoice\nDetail(invoiceId)
+ID -> I : 24: đóng gói Invoice6\n+ chi tiết DV, PT
+activate I
+I --> ID : 25: trả Invoice6 đầy đủ
+deactivate I
+ID --> E : 26: Invoice6
+deactivate ID
+E --> QL : 27: hiển thị thông tin chung\n+ bảng DV + bảng PT
+deactivate E
+@enduml

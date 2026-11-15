@@ -1,0 +1,178 @@
+@startuml 11_ThietKe_LopThucThe
+!include _style.iuml
+hide circle
+left to right direction
+skinparam nodesep 15
+skinparam ranksep 40
+hide empty methods
+
+class SystemMember6 {
+  -id : int
+  -username : String
+  -password : String
+  -name : String
+  -phone : String
+  -email : String
+  -address : String
+  -dob : Date
+  -role : String
+}
+class Customer6 {
+  -customerCode : String
+}
+class Staff6 {
+  -staffCode : String
+  -position : String
+}
+class ManagementStaff6
+class SaleStaff6
+class WarehouseStaff6
+class TechnicalStaff6
+
+class Vehicle6 {
+  -id : int
+  -licensePlate : String
+  -vehicleType : String
+  -brand : String
+  -model : String
+  -customer : Customer6
+}
+class Appointment6 {
+  -id : int
+  -appointmentCode : String
+  -appointmentDate : Date
+  -status : String
+  -vehicle : Vehicle6
+}
+class Reception6 {
+  -id : int
+  -receptionCode : String
+  -checkInTime : Date
+  -status : String
+  -vehicle : Vehicle6
+  -appointment : Appointment6
+  -saleStaff : SaleStaff6
+}
+class Service6 {
+  -id : int
+  -serviceCode : String
+  -name : String
+  -description : String
+  -price : float
+  -status : String
+  -supportedVehicleType : String
+  -warrantyPeriod : int
+}
+class SparePart6 {
+  -id : int
+  -partCode : String
+  -name : String
+  -description : String
+  -price : float
+  -stock : int
+  -supportedVehicleType : String
+  -warrantyPeriod : int
+}
+class Invoice6 {
+  -id : int
+  -invoiceCode : String
+  -createdDate : Date
+  -totalAmount : float
+  -reception : Reception6
+  -serviceDetails : List<ServiceDetail6>
+  -sparePartDetails : List<SparePartDetail6>
+}
+class ServiceDetail6 {
+  -id : int
+  -quantity : int
+  -unitPrice : float
+  -subTotal : float
+  -service : Service6
+  -technicalStaff : TechnicalStaff6
+}
+class SparePartDetail6 {
+  -id : int
+  -quantity : int
+  -unitPrice : float
+  -subTotal : float
+  -sparePart : SparePart6
+}
+class Supplier6 {
+  -id : int
+  -supplierCode : String
+  -name : String
+  -phone : String
+  -address : String
+  -email : String
+}
+class ImportInvoice6 {
+  -id : int
+  -importCode : String
+  -importDate : Date
+  -totalAmount : float
+  -supplier : Supplier6
+  -warehouseStaff : WarehouseStaff6
+  -importDetails : List<ImportDetail6>
+}
+class ImportDetail6 {
+  -id : int
+  -quantity : int
+  -unitPrice : float
+  -subTotal : float
+  -sparePart : SparePart6
+}
+class CustomerStatistic6 {
+  -totalRevenue : float
+  -startDate : Date
+  -endDate : Date
+}
+class ServiceStatistic6 {
+  -totalUsage : int
+  -totalRevenue : float
+  -startDate : Date
+  -endDate : Date
+}
+class SparePartStatistic6 {
+  -totalSold : int
+  -totalRevenue : float
+  -startDate : Date
+  -endDate : Date
+}
+class SupplierStatistic6 {
+  -totalImportedQuantity : int
+  -totalImportAmount : float
+  -startDate : Date
+  -endDate : Date
+}
+
+' ---- Ke thua ----
+SystemMember6 <|-- Customer6
+SystemMember6 <|-- Staff6
+Staff6 <|-- ManagementStaff6
+Staff6 <|-- SaleStaff6
+Staff6 <|-- WarehouseStaff6
+Staff6 <|-- TechnicalStaff6
+Customer6 <|-- CustomerStatistic6
+Service6 <|-- ServiceStatistic6
+SparePart6 <|-- SparePartStatistic6
+Supplier6 <|-- SupplierStatistic6
+
+' ---- Aggregation: thoi o lop chua thuoc tinh ----
+Vehicle6 "0..*" o-- "1" Customer6
+Appointment6 "0..*" o-- "1" Vehicle6
+Reception6 "0..*" o-- "1" Vehicle6
+Reception6 "0..1" o-- "0..1" Appointment6
+Reception6 "0..*" o-- "1" SaleStaff6
+Invoice6 "0..1" o-- "1" Reception6
+ServiceDetail6 "0..*" o-- "1" Service6
+ServiceDetail6 "0..*" o-- "1" TechnicalStaff6
+SparePartDetail6 "0..*" o-- "1" SparePart6
+ImportInvoice6 "0..*" o-- "1" Supplier6
+ImportInvoice6 "0..*" o-- "1" WarehouseStaff6
+ImportDetail6 "0..*" o-- "1" SparePart6
+
+' ---- Composition ----
+Invoice6 "1" *-- "1..*" ServiceDetail6
+Invoice6 "1" *-- "0..*" SparePartDetail6
+ImportInvoice6 "1" *-- "1..*" ImportDetail6
+@enduml

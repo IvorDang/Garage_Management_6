@@ -1,0 +1,75 @@
+@startuml 13_ThietKe_Module1
+!include _style.iuml
+hide circle
+skinparam nodesep 30
+skinparam ranksep 50
+package "View (JSP)" {
+  class "gdChinhKH6.jsp" as GDC {
+    -subTimKiem : link
+    -kh : Customer6
+  }
+  class "gdTimKiem6.jsp" as GDT {
+    -inTuKhoa : text
+    -subXacNhan : submit
+    -tblKetQua : Table
+    -chonChiTiet : link
+    -listService : List<Service6>
+    -listSparePart : List<SparePart6>
+  }
+  class "gdChiTiet6.jsp" as GDCT {
+    -outThongTin : text
+    -subQuayLai : button
+    -service : Service6
+    -sparePart : SparePart6
+  }
+}
+package "Data Access Object (DAO)" {
+  class DAO6 {
+    #con : Connection
+    +DAO6()
+  }
+  class ServiceDAO6 {
+    +ServiceDAO6()
+    +searchService(keyword : String) : List<Service6>
+    +getServiceDetail(id : int) : Service6
+  }
+  class SparePartDAO6 {
+    +SparePartDAO6()
+    +searchSparePart(keyword : String) : List<SparePart6>
+    +getSparePartDetail(id : int) : SparePart6
+  }
+}
+package "Model (Entity)" {
+  class Service6 {
+    -id : int
+    -serviceCode : String
+    -name : String
+    -description : String
+    -price : float
+    -status : String
+    -supportedVehicleType : String
+    -warrantyPeriod : int
+  }
+  class SparePart6 {
+    -id : int
+    -partCode : String
+    -name : String
+    -description : String
+    -price : float
+    -stock : int
+    -supportedVehicleType : String
+    -warrantyPeriod : int
+  }
+}
+GDC ..> GDT : calls >
+GDT ..> GDCT : calls >
+GDCT ..> GDT : returns >
+GDT --> ServiceDAO6 : uses >
+GDT --> SparePartDAO6 : uses >
+GDCT --> ServiceDAO6 : uses >
+GDCT --> SparePartDAO6 : uses >
+DAO6 <|-- ServiceDAO6
+DAO6 <|-- SparePartDAO6
+ServiceDAO6 ..> Service6 : <<creates>>
+SparePartDAO6 ..> SparePart6 : <<creates>>
+@enduml
