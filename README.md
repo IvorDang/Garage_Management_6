@@ -82,6 +82,10 @@ Trình duyệt ──HTTP──► Tomcat 10.1 ──JDBC──► MySQL 8 (gara
 
 Schema `garage_db6` gồm **18 bảng**. Bảng kế thừa được tách theo lớp: `tblSystemMember6` → `tblCustomer6`, `tblStaff6` → 4 bảng nhân viên. File `database/garage_db6.sql` tạo toàn bộ bảng và dữ liệu mẫu khớp với kịch bản trong báo cáo.
 
+**Dữ liệu mở rộng** (cuối file SQL, sinh bởi `database/gen_data6.py`, seed cố định): **981 phụ tùng + 161 dịch vụ (~1.140 sản phẩm)**, 60 khách hàng, 71 xe, 270 hóa đơn (01/2025 – 11/2026), 24 phiếu nhập kho, 8 nhà cung cấp. Phụ tùng theo 30 dòng xe phổ biến ở Việt Nam (Vios, Accent, City, Xpander, CX-5, Ranger, Fadil…), lốp theo cỡ thực tế (Michelin/Bridgestone/Kumho), dầu nhớt, ắc quy GS/Varta/Amaron…; giá là giá tham khảo thị trường, làm tròn, chỉ phục vụ học tập. Dữ liệu mở rộng không làm đổi kết quả kịch bản báo cáo: kỳ 01/01–30/06/2026 vẫn là KH036 (36 triệu) rồi KH018 (15,5 triệu).
+
+Ví dụ từ khóa để thử: `má phanh`, `lốp michelin`, `ắc quy`, `bảo dưỡng`, `Xpander`, `Ranger`.
+
 Doanh thu của khách hàng được tính theo chuỗi quan hệ:
 
 ```
@@ -188,7 +192,7 @@ Mở trình duyệt tại **http://localhost:8080/GarageManagement/**
 
 **Kịch bản demo nhanh**
 
-1. Mở trang chủ, bấm *Tìm kiếm dịch vụ/phụ tùng*, nhập **má phanh**. Kết quả: PT100, PT101, DV200. Bấm *Xem chi tiết* PT100.
+1. Mở trang chủ, bấm *Tìm kiếm dịch vụ/phụ tùng*, nhập **má phanh**. Kết quả: PT100, PT101 đứng đầu, sau đó là má phanh của các dòng xe khác và DV200. Bấm *Xem chi tiết* PT100.
 2. Bấm *Đặt lịch hẹn*, hệ thống yêu cầu đăng nhập. Đăng nhập **ql1 / 123**.
 3. Vào *Xem báo cáo thống kê*, chọn **01/01/2026 – 30/06/2026** rồi bấm *Tìm kiếm*. Kết quả: Đặng Văn L 36.000.000, Cao Văn B 15.500.000, Nguyễn Thị H 1.200.000.
 4. Bấm **Cao Văn B** để thấy HD10024 và HD10067. Bấm **HD10024** để xem chi tiết: thay dầu động cơ (thợ Nguyễn Văn T), 3 lốp Michelin, tổng 8.000.000.
