@@ -131,8 +131,9 @@ Các lệnh dưới đây chạy trong **PowerShell** (terminal của VS Code), 
 $env:JAVA_HOME = "$HOME\.jdks\openjdk-25.0.2"    # JDK 17+ (không dùng Java 8)
 $MVN    = "C:\apache-maven-3.9.16\bin\mvn.cmd"
 $TOMCAT = "C:\apache-tomcat-10.1.61"
+$env:CATALINA_HOME = $TOMCAT                      # startup.bat / shutdown.bat cần biến này
 
-# 2) Lấy mã nguồn (chỉ lần đầu)
+# 2) Lấy mã nguồn (CHỈ khi máy chưa có dự án; nếu đã có thì chỉ cần cd vào thư mục gốc chứa pom.xml)
 git clone https://github.com/IvorDang/Garage_Management_6.git
 cd Garage_Management_6
 
@@ -201,6 +202,8 @@ Sau đó mở lại trang và bấm **Ctrl + F5** để trình duyệt không d�
 | Tiếng Việt lỗi font | Chạy lại toàn bộ file SQL (đầu file đã có `SET NAMES utf8mb4`) |
 | `mvn` / `startup.bat` *is not recognized* | Gọi bằng đường dẫn đầy đủ như mục 5.4 (`& $MVN …`, `& "$TOMCAT\bin\startup.bat"`) |
 | `invalid target release: 17` / build lỗi do Java 8 | Chưa đặt `$env:JAVA_HOME` sang JDK 17+ trong terminal hiện tại |
+| `The CATALINA_HOME environment variable is not defined correctly` | Chạy `$env:CATALINA_HOME = $TOMCAT` (đường dẫn Tomcat phải đúng, kiểm tra bằng `Test-Path "$TOMCAT\bin\startup.bat"`) |
+| Build xong nhưng không có `target\GarageManagement.war` | Terminal không đứng ở thư mục gốc chứa `pom.xml` (vd. đang ở trong bản clone thừa) |
 | `Address already in use: 8080` | Tomcat cũ còn chạy: chạy `shutdown.bat` hoặc `taskkill` (mục 5.5) |
 | Sửa code nhưng web không đổi | Chưa build/deploy lại hoặc trình duyệt dùng cache: làm theo mục 5.6, rồi bấm Ctrl+F5 |
 
