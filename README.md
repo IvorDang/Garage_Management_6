@@ -151,6 +151,20 @@ Mở trình duyệt tại **http://localhost:8080/GarageManagement/**. Tomcat m�
 
 ### 5.5. Tắt / mở server
 
+**Mở lại để demo khi code không đổi** (không cần build lại). Chạy trong terminal mới:
+
+```powershell
+$env:JAVA_HOME     = "$HOME\.jdks\openjdk-25.0.2"      # Tomcat 10.1 cần Java 11+, máy đang mặc định Java 8
+$env:CATALINA_HOME = "C:\apache-tomcat-10.1.61"
+& "$env:CATALINA_HOME\bin\startup.bat"                 # mở http://localhost:8080/GarageManagement/
+```
+
+**Tắt:** `& "$env:CATALINA_HOME\bin\shutdown.bat"` (hoặc đóng cửa sổ console Tomcat).
+
+> Hai biến môi trường trên mất khi đóng terminal, nên mỗi lần mở terminal mới đều phải chạy lại. Chỉ build lại (mục 5.6) khi đã sửa `.java/.jsp/.css` hoặc `git pull` code mới. Chạy lại file SQL thì không cần build, chỉ cần tải lại trang.
+
+Các lệnh khác:
+
 | Việc | Lệnh (PowerShell) |
 |---|---|
 | Bật Tomcat | `& "$TOMCAT\bin\startup.bat"` |
