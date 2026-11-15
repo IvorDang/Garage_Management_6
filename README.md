@@ -122,21 +122,67 @@ con = DriverManager.getConnection(dbUrl, "root", "root"); // tham số thứ 3 =
 
 Driver `mysql-connector-j` đã khai báo trong `pom.xml`, Maven tự tải về và đóng vào file `.war`.
 
-### 5.4. Build và chạy
+### 5.4. Build và chạy lần đầu
 
-```bat
+Các lệnh dưới đây chạy trong **PowerShell** (terminal của VS Code), tại thư mục gốc dự án. Hãy sửa 3 đường dẫn ở bước 1 cho đúng với máy bạn.
+
+```powershell
+# 1) Khai báo đường dẫn (chạy lại mỗi khi mở terminal mới)
+$env:JAVA_HOME = "$HOME\.jdks\openjdk-25.0.2"    # JDK 17+ (không dùng Java 8)
+$MVN    = "C:\apache-maven-3.9.16\bin\mvn.cmd"
+$TOMCAT = "C:\apache-tomcat-10.1.61"
+
+# 2) Lấy mã nguồn (chỉ lần đầu)
 git clone https://github.com/IvorDang/Garage_Management_6.git
 cd Garage_Management_6
-mvn clean package
-copy target\GarageManagement.war C:\tomcat10\webapps\
-C:\tomcat10\bin\startup.bat
+
+# 3) Build ra target\GarageManagement.war
+& $MVN clean package
+
+# 4) Deploy lên Tomcat và bật server
+Copy-Item target\GarageManagement.war "$TOMCAT\webapps\" -Force
+& "$TOMCAT\bin\startup.bat"
 ```
 
-Mở trình duyệt tại **http://localhost:8080/GarageManagement/**
+Mở trình duyệt tại **http://localhost:8080/GarageManagement/**. Tomcat mở thêm một cửa sổ console. Đừng đóng cửa sổ này khi đang demo.
 
-> Chạy trong VS Code: ở panel **SERVERS** (Community Server Connectors), thêm Tomcat tại `C:\tomcat10`. Sau đó chuột phải chọn **Add Deployment**, trỏ tới `target/GarageManagement.war`, rồi chọn **Start Server**.
+> Kiểm tra nhanh: `java -version` phải là 17 trở lên sau khi đặt `JAVA_HOME`. `& $MVN -v` phải in ra phiên bản Maven.
 
-### 5.5. Tài khoản demo
+### 5.5. Tắt / mở server
+
+| Việc | Lệnh (PowerShell) |
+|---|---|
+| Bật Tomcat | `& "$TOMCAT\bin\startup.bat"` |
+| Tắt Tomcat | `& "$TOMCAT\bin\shutdown.bat"` (hoặc đóng cửa sổ console Tomcat) |
+| Kiểm tra cổng 8080 | `netstat -ano \| findstr :8080` |
+| Tắt tiến trình chiếm cổng 8080 | `taskkill /PID <PID> /F` (PID là cột cuối của lệnh trên) |
+| Bật / tắt MySQL | `net start MySQL80` / `net stop MySQL80` (chạy PowerShell **Run as Administrator**), hoặc dùng `services.msc` |
+
+Tomcat cần MySQL đang chạy. Thông thường MySQL tự khởi động cùng Windows.
+
+### 5.6. Cập nhật sau khi sửa code
+
+Mỗi lần sửa file `.java`, `.jsp` hoặc `.css`, phải build và deploy lại thì Tomcat mới chạy bản mới:
+
+```powershell
+& "$TOMCAT\bin\shutdown.bat"
+& $MVN clean package
+Remove-Item "$TOMCAT\webapps\GarageManagement" -Recurse -Force -ErrorAction SilentlyContinue   # xóa bản giải nén cũ
+Copy-Item target\GarageManagement.war "$TOMCAT\webapps\" -Force
+& "$TOMCAT\bin\startup.bat"
+```
+
+Sau đó mở lại trang và bấm **Ctrl + F5** để trình duyệt không dùng bản đã lưu (cache).
+
+**Cập nhật CSDL** (khi `database/garage_db6.sql` thay đổi): mở file trong Workbench, rồi bấm ⚡ **Execute**. Script tự `DROP` và tạo lại `garage_db6`, nên không cần restart Tomcat. Chỉ cần tải lại trang.
+
+**Lấy code mới từ GitHub:** chạy `git pull`, rồi làm các bước ở mục 5.6 này.
+
+> Không commit mật khẩu MySQL thật. Trước khi `git push`, chạy `git checkout -- src/main/java/dao/DAO6.java` để trả file về mặc định, hoặc đừng stage file đó.
+
+> Chạy trong VS Code: ở panel **SERVERS** (Community Server Connectors), thêm Tomcat tại `$TOMCAT`. Sau đó chuột phải chọn **Add Deployment**, trỏ tới `target/GarageManagement.war`, rồi chọn **Start Server** / **Stop Server**.
+
+### 5.7. Tài khoản demo
 
 | Vai trò | Tên đăng nhập | Mật khẩu | Ghi chú |
 |---|---|---|---|
@@ -144,7 +190,7 @@ Mở trình duyệt tại **http://localhost:8080/GarageManagement/**
 | Khách hàng | `kh1` | `123` | Cao Văn B (KH018) |
 | Khách vãng lai | — | — | Không cần tài khoản để tìm kiếm |
 
-### 5.6. Lỗi thường gặp
+### 5.8. Lỗi thường gặp
 
 | Lỗi | Cách sửa |
 |---|---|
@@ -153,6 +199,10 @@ Mở trình duyệt tại **http://localhost:8080/GarageManagement/**
 | `ClassNotFoundException: com.mysql.cj.jdbc.Driver` | Chưa build bằng Maven (hoặc chưa có jar trong `WEB-INF/lib`) |
 | 404 toàn bộ / lỗi `javax.servlet` | Đang dùng Tomcat 9: đổi sang Tomcat 10.1 |
 | Tiếng Việt lỗi font | Chạy lại toàn bộ file SQL (đầu file đã có `SET NAMES utf8mb4`) |
+| `mvn` / `startup.bat` *is not recognized* | Gọi bằng đường dẫn đầy đủ như mục 5.4 (`& $MVN …`, `& "$TOMCAT\bin\startup.bat"`) |
+| `invalid target release: 17` / build lỗi do Java 8 | Chưa đặt `$env:JAVA_HOME` sang JDK 17+ trong terminal hiện tại |
+| `Address already in use: 8080` | Tomcat cũ còn chạy: chạy `shutdown.bat` hoặc `taskkill` (mục 5.5) |
+| Sửa code nhưng web không đổi | Chưa build/deploy lại hoặc trình duyệt dùng cache: làm theo mục 5.6, rồi bấm Ctrl+F5 |
 
 ## 6. Demo giao diện
 
