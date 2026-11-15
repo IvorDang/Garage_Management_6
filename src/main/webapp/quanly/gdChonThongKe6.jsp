@@ -23,9 +23,9 @@
                 <td>
                     <select name="inLoaiTK">
                         <option value="KH_DOANHTHU" selected>Thống kê khách hàng theo doanh thu</option>
-                        <option value="DICHVU">Thống kê dịch vụ</option>
-                        <option value="PHUTUNG">Thống kê phụ tùng</option>
-                        <option value="NHACUNGCAP">Thống kê nhà cung cấp</option>
+                        <option disabled>Thống kê dịch vụ (đang phát triển - ngoài phạm vi)</option>
+                        <option disabled>Thống kê phụ tùng (đang phát triển - ngoài phạm vi)</option>
+                        <option disabled>Thống kê nhà cung cấp (đang phát triển - ngoài phạm vi)</option>
                     </select>
                 </td>
             </tr>

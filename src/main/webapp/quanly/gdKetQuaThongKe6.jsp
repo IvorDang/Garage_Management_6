@@ -20,7 +20,12 @@
         List<CustomerStatistic6> listTK = null;
         String errorMsg = null;
 
-        if (tuNgayStr == null || tuNgayStr.isEmpty() || denNgayStr == null || denNgayStr.isEmpty()) {
+        String loaiTK = request.getParameter("inLoaiTK");
+
+        if (loaiTK != null && !loaiTK.isEmpty() && !"KH_DOANHTHU".equals(loaiTK)) {
+            // Thong ke dich vu / phu tung / nha cung cap: ngoai pham vi 2 module
+            errorMsg = "Chức năng đang phát triển (ngoài phạm vi 2 module). Hiện chỉ hỗ trợ thống kê khách hàng theo doanh thu.";
+        } else if (tuNgayStr == null || tuNgayStr.isEmpty() || denNgayStr == null || denNgayStr.isEmpty()) {
             errorMsg = "Vui lòng nhập đầy đủ Ngày bắt đầu và Ngày kết thúc!";
         } else {
             try {
