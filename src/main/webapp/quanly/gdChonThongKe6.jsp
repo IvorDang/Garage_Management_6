@@ -40,11 +40,11 @@
             </tr>
             <tr>
                 <td>Từ ngày:</td>
-                <td><input type="date" name="inTuNgay" value="2026-01-01" required /></td>
+                <td><input type="text" name="inTuNgay" value="01/01/2026" placeholder="dd/mm/yyyy" maxlength="10" required /></td>
             </tr>
             <tr>
                 <td>Đến ngày:</td>
-                <td><input type="date" name="inDenNgay" value="2026-06-30" required /></td>
+                <td><input type="text" name="inDenNgay" value="30/06/2026" placeholder="dd/mm/yyyy" maxlength="10" required /></td>
             </tr>
             <tr>
                 <td></td>

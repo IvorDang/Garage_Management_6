@@ -13,21 +13,51 @@ public class Vehicle6 implements Serializable {
     public Vehicle6() {
     }
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public int getId() {
+        return id;
+    }
 
-    public String getLicensePlate() { return licensePlate; }
-    public void setLicensePlate(String licensePlate) { this.licensePlate = licensePlate; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    public String getVehicleType() { return vehicleType; }
-    public void setVehicleType(String vehicleType) { this.vehicleType = vehicleType; }
+    public String getLicensePlate() {
+        return licensePlate;
+    }
 
-    public String getBrand() { return brand; }
-    public void setBrand(String brand) { this.brand = brand; }
+    public void setLicensePlate(String licensePlate) {
+        this.licensePlate = licensePlate;
+    }
 
-    public String getModel() { return model; }
-    public void setModel(String model) { this.model = model; }
+    public String getVehicleType() {
+        return vehicleType;
+    }
 
-    public Customer6 getCustomer() { return customer; }
-    public void setCustomer(Customer6 customer) { this.customer = customer; }
+    public void setVehicleType(String vehicleType) {
+        this.vehicleType = vehicleType;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public Customer6 getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer6 customer) {
+        this.customer = customer;
+    }
 }

@@ -5,6 +5,16 @@
         return;
     }
 %>
+<%!
+    private Date parseNgay(String s) throws java.text.ParseException {
+        java.text.SimpleDateFormat f = new java.text.SimpleDateFormat(s.contains("/") ? "dd/MM/yyyy" : "yyyy-MM-dd");
+        f.setLenient(false);
+        java.text.ParsePosition pos = new java.text.ParsePosition(0);
+        java.util.Date d = f.parse(s, pos);
+        if (d == null || pos.getIndex() != s.length()) throw new java.text.ParseException(s, pos.getErrorIndex());
+        return new Date(d.getTime());
+    }
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,8 +39,11 @@
             errorMsg = "Vui lòng nhập đầy đủ Ngày bắt đầu và Ngày kết thúc!";
         } else {
             try {
-                startDate = Date.valueOf(tuNgayStr);
-                endDate = Date.valueOf(denNgayStr);
+                // Nhận ngày dạng dd/MM/yyyy (từ form) hoặc yyyy-MM-dd (từ link Quay lại); strict: 31/02 là ngày không tồn tại
+                startDate = parseNgay(tuNgayStr.trim());
+                endDate = parseNgay(denNgayStr.trim());
+                tuNgayStr = startDate.toString();   // chuyển sang yyyy-MM-dd để truyền tiếp cho gdDSHoaDon6
+                denNgayStr = endDate.toString();
             } catch (Exception e) {
                 errorMsg = "Vui lòng nhập thời gian tồn tại!";
             }
