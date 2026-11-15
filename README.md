@@ -46,7 +46,8 @@ Theo yêu cầu đề bài, dự án cài đặt chi tiết **2 module**:
 
 **Module 2 – Thống kê khách hàng theo doanh thu**
 - Đăng nhập. Các trang quản lý kiểm tra phiên làm việc (session); chưa đăng nhập thì chuyển về trang đăng nhập.
-- Chọn khoảng thời gian, xem danh sách khách hàng xếp theo tổng doanh thu giảm dần.
+- Chọn loại thống kê (chỉ *Thống kê khách hàng theo doanh thu*; 3 loại dịch vụ, phụ tùng, nhà cung cấp hiển thị nhưng bị vô hiệu hóa vì ngoài phạm vi).
+- Nhập khoảng thời gian dạng **dd/mm/yyyy**, xem danh sách khách hàng xếp theo tổng doanh thu giảm dần.
 - Chọn khách hàng để xem danh sách hóa đơn trong kỳ, chọn hóa đơn để xem chi tiết (bảng dịch vụ kèm thợ thực hiện, bảng phụ tùng).
 - Xử lý ngoại lệ: bỏ trống ngày, ngày không tồn tại, ngày bắt đầu lớn hơn ngày kết thúc, kỳ không có dữ liệu.
 
@@ -67,6 +68,7 @@ Trình duyệt ──HTTP──► Tomcat 10.1 ──JDBC──► MySQL 8 (gara
 - **Quy ước đặt tên trang:** `gd…` là trang **giao diện** (có hiển thị). `do…` là trang **xử lý** (nhận dữ liệu, gọi DAO rồi chuyển trang).
 - **Hậu tố `6`** trên mọi lớp, bảng và trang là quy ước đánh số của đề.
 - `DAO6` là lớp cha giữ kết nối JDBC; các DAO con kế thừa để dùng chung.
+- `Invoice6` chứa `reception : Reception6`; tên khách trên hóa đơn lấy theo `Invoice6 → Reception6 → Vehicle6 → Customer6`, đúng như biểu đồ thiết kế. Sau khi đăng nhập, session lưu `Customer6` hoặc `ManagementStaff6`.
 
 | Tầng | Thành phần |
 |---|---|
@@ -74,7 +76,7 @@ Trình duyệt ──HTTP──► Tomcat 10.1 ──JDBC──► MySQL 8 (gara
 | view / khachhang | `gdChinhKH6.jsp`, `gdTimKiem6.jsp`, `gdChiTiet6.jsp` |
 | view / quanly | `gdChinhQL6.jsp`, `gdChonThongKe6.jsp`, `gdKetQuaThongKe6.jsp`, `gdDSHoaDon6.jsp`, `gdChiTietHoaDon6.jsp` |
 | dao | `DAO6`, `SystemMemberDAO6`, `ServiceDAO6`, `SparePartDAO6`, `CustomerStatisticDAO6`, `InvoiceDAO6` |
-| model | `SystemMember6`, `Customer6`, `Staff6`, `ManagementStaff6`, `TechnicalStaff6`, `Service6`, `SparePart6`, `Invoice6`, `ServiceDetail6`, `SparePartDetail6`, `CustomerStatistic6` |
+| model | `SystemMember6`, `Customer6`, `Staff6`, `ManagementStaff6`, `TechnicalStaff6`, `CustomerStatistic6`, `Vehicle6`, `Reception6`, `Invoice6`, `ServiceDetail6`, `SparePartDetail6`, `Service6`, `SparePart6` |
 
 ![Package diagram](docs/uml/19_Package.png)
 
@@ -124,7 +126,9 @@ Driver `mysql-connector-j` đã khai báo trong `pom.xml`, Maven tự tải về
 
 ### 5.4. Build và chạy lần đầu
 
-Các lệnh dưới đây chạy trong **PowerShell** (terminal của VS Code), tại thư mục gốc dự án. Hãy sửa 3 đường dẫn ở bước 1 cho đúng với máy bạn.
+Các lệnh dưới đây chạy trong **PowerShell** (terminal của VS Code), tại **thư mục gốc dự án** (thư mục chứa `pom.xml`). Hãy sửa các đường dẫn ở bước 1 cho đúng với máy bạn.
+
+> ⚠️ **Không chạy `git clone` bên trong thư mục dự án.** Máy đã có dự án thì chỉ cần `cd` vào thư mục đó. Clone thêm sẽ tạo ra thư mục lồng `Garage_Management_6/` thừa, dễ build/push nhầm chỗ. Chỉ clone khi tải dự án về một máy mới, và clone ra một thư mục **bên ngoài** (ví dụ `C:\Projects`).
 
 ```powershell
 # 1) Khai báo đường dẫn (chạy lại mỗi khi mở terminal mới)
@@ -133,9 +137,8 @@ $MVN    = "C:\apache-maven-3.9.16\bin\mvn.cmd"
 $TOMCAT = "C:\apache-tomcat-10.1.61"
 $env:CATALINA_HOME = $TOMCAT                      # startup.bat / shutdown.bat cần biến này
 
-# 2) Lấy mã nguồn (CHỈ khi máy chưa có dự án; nếu đã có thì chỉ cần cd vào thư mục gốc chứa pom.xml)
-git clone https://github.com/IvorDang/Garage_Management_6.git
-cd Garage_Management_6
+# 2) Vào thư mục gốc dự án (thư mục chứa pom.xml)
+cd "C:\Users\Admin\OneDrive\Máy tính\PTIT\PTTKHTTT\GarageManagement"
 
 # 3) Build ra target\GarageManagement.war
 & $MVN clean package
@@ -217,7 +220,8 @@ Sau đó mở lại trang và bấm **Ctrl + F5** để trình duyệt không d�
 | `mvn` / `startup.bat` *is not recognized* | Gọi bằng đường dẫn đầy đủ như mục 5.4 (`& $MVN …`, `& "$TOMCAT\bin\startup.bat"`) |
 | `invalid target release: 17` / build lỗi do Java 8 | Chưa đặt `$env:JAVA_HOME` sang JDK 17+ trong terminal hiện tại |
 | `The CATALINA_HOME environment variable is not defined correctly` | Chạy `$env:CATALINA_HOME = $TOMCAT` (đường dẫn Tomcat phải đúng, kiểm tra bằng `Test-Path "$TOMCAT\bin\startup.bat"`) |
-| Build xong nhưng không có `target\GarageManagement.war` | Terminal không đứng ở thư mục gốc chứa `pom.xml` (vd. đang ở trong bản clone thừa) |
+| Build xong nhưng không có `target\GarageManagement.war` | Terminal không đứng ở thư mục gốc chứa `pom.xml`: chạy lại lệnh `cd` ở bước 2 mục 5.4 |
+| Xuất hiện thư mục `Garage_Management_6/` bên trong dự án | Do chạy `git clone` nhầm chỗ. `cd` ra thư mục gốc rồi xóa: `Remove-Item Garage_Management_6 -Recurse -Force` (thư mục này đã nằm trong `.gitignore` nên không bị push) |
 | `Address already in use: 8080` | Tomcat cũ còn chạy: chạy `shutdown.bat` hoặc `taskkill` (mục 5.5) |
 | Sửa code nhưng web không đổi | Chưa build/deploy lại hoặc trình duyệt dùng cache: làm theo mục 5.6, rồi bấm Ctrl+F5 |
 
@@ -260,8 +264,8 @@ Sau đó mở lại trang và bấm **Ctrl + F5** để trình duyệt không d�
 **Kịch bản demo nhanh**
 
 1. Mở trang chủ, bấm *Tìm kiếm dịch vụ/phụ tùng*, nhập **má phanh**. Kết quả: PT100, PT101 đứng đầu, sau đó là má phanh của các dòng xe khác và DV200. Bấm *Xem chi tiết* PT100.
-2. Bấm *Đặt lịch hẹn*, hệ thống yêu cầu đăng nhập. Đăng nhập **ql1 / 123**.
-3. Vào *Xem báo cáo thống kê*, chọn **01/01/2026 – 30/06/2026** rồi bấm *Tìm kiếm*. Kết quả: Đặng Văn L 36.000.000, Cao Văn B 15.500.000, Nguyễn Thị H 1.200.000.
+2. Quay lại trang chủ, bấm *Đặt lịch hẹn*: hệ thống yêu cầu đăng nhập. Đăng nhập **ql1 / 123**.
+3. Vào *Xem báo cáo thống kê*, nhập **01/01/2026 – 30/06/2026** (dạng dd/mm/yyyy) rồi bấm *Tìm kiếm*. Hai dòng đầu: Đặng Văn L 36.000.000, Cao Văn B 15.500.000; phía dưới là các khách hàng khác của dữ liệu mở rộng. Thử nhập 31/02/2026 để thấy thông báo "ngày không tồn tại".
 4. Bấm **Cao Văn B** để thấy HD10024 và HD10067. Bấm **HD10024** để xem chi tiết: thay dầu động cơ (thợ Nguyễn Văn T), 3 lốp Michelin, tổng 8.000.000.
 
 ## 7. Tài liệu phân tích – thiết kế (UML)
@@ -283,17 +287,19 @@ Xuất lại ảnh từ mã nguồn: cài extension **PlantUML** trong VS Code, 
 ## 8. Cấu trúc thư mục
 
 ```
-Garage_Management_6/
+GarageManagement/                   # thư mục dự án trên máy (repo GitHub: Garage_Management_6)
 ├── pom.xml                         # Maven: đóng gói WAR, driver mysql-connector-j
 ├── database/
-│   └── garage_db6.sql              # tạo 18 bảng + dữ liệu mẫu
+│   ├── garage_db6.sql              # tạo 18 bảng + dữ liệu mẫu (~1.140 sản phẩm)
+│   └── gen_data6.py                # script sinh dữ liệu mở rộng
 ├── docs/
-│   ├── screenshots/                # ảnh demo giao diện
+│   ├── screenshots/                # ảnh demo giao diện (README)
+│   ├── giaodien_baocao/            # ảnh giao diện chạy thật dùng cho báo cáo (mục K)
 │   └── uml/                        # 20 biểu đồ PlantUML (.puml + .png) + bản PDF A4
 └── src/main/
     ├── java/
     │   ├── dao/                    # DAO6 + các lớp truy xuất dữ liệu
-    │   └── model/                  # lớp thực thể
+    │   └── model/                  # 13 lớp thực thể
     └── webapp/
         ├── index.jsp               # chuyển tới trang chủ khách hàng
         ├── css/style.css
