@@ -11,6 +11,15 @@
 <meta charset="UTF-8">
 <title>GDChonThongKe6 - Chọn loại thống kê</title>
 <link rel="stylesheet" href="../css/style.css">
+<script>
+    // Chi ho tro thong ke khach hang theo doanh thu; cac loai khac ngoai pham vi 2 module
+    function kiemTraLoaiTK(sel) {
+        if (sel.value !== "KH_DOANHTHU") {
+            alert("Chức năng đang phát triển (ngoài phạm vi 2 module)");
+            sel.value = "KH_DOANHTHU";
+        }
+    }
+</script>
 </head>
 <body>
     <h2>Chọn loại thống kê</h2>
@@ -21,11 +30,11 @@
             <tr>
                 <td>Loại thống kê:</td>
                 <td>
-                    <select name="inLoaiTK">
+                    <select name="inLoaiTK" id="inLoaiTK" onchange="kiemTraLoaiTK(this)">
                         <option value="KH_DOANHTHU" selected>Thống kê khách hàng theo doanh thu</option>
-                        <option disabled>Thống kê dịch vụ (đang phát triển - ngoài phạm vi)</option>
-                        <option disabled>Thống kê phụ tùng (đang phát triển - ngoài phạm vi)</option>
-                        <option disabled>Thống kê nhà cung cấp (đang phát triển - ngoài phạm vi)</option>
+                        <option value="DICHVU" disabled>Thống kê dịch vụ (đang phát triển - ngoài phạm vi)</option>
+                        <option value="PHUTUNG" disabled>Thống kê phụ tùng (đang phát triển - ngoài phạm vi)</option>
+                        <option value="NHACUNGCAP" disabled>Thống kê nhà cung cấp (đang phát triển - ngoài phạm vi)</option>
                     </select>
                 </td>
             </tr>
