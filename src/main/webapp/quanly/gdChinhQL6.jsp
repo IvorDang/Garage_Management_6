@@ -14,7 +14,7 @@
 </head>
 <body>
     <%
-        SystemMember6 ql = (SystemMember6) session.getAttribute("manager");
+        ManagementStaff6 ql = (ManagementStaff6) session.getAttribute("manager");
     %>
     <h2>Garage System - Quản lý</h2>
     <p>Xin chào: <b><%= (ql != null) ? ql.getName() : "Quản lý" %></b></p>

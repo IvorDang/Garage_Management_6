@@ -77,7 +77,7 @@ entity tblReception6 {
   checkInTime : datetime
   status : varchar(30)
   tblVehicle6id <<FK>>
-  tblAppointment6id <<FK>> (null)
+  tblAppointment6id <<FK>> (null, unique)
   tblSaleStaff6id <<FK>>
 }
 entity tblService6 {

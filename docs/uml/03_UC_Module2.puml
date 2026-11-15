@@ -7,7 +7,7 @@ actor "Management Staff" as MS
 SM <|-- ST
 ST <|-- MS
 rectangle "Garage Management System" {
-  usecase "View Customer\nStatistic 6" as UC0
+  usecase "View Customer\nStatistics 6" as UC0
   usecase "Login 6" as L
   usecase "Select Statistical\nReports 6" as U1
   usecase "Select Customer Statistics\nby Revenue 6" as U2

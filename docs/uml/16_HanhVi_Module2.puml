@@ -39,8 +39,7 @@ bảng dịch vụ và bảng phụ tùng;
 if (Click Quay lại?) then (có)
   |Hệ thống JSP và DAO|
   :Hiển thị lại trang trước đó;
-  stop
 else (không)
-  stop
 endif
+stop
 @enduml

@@ -7,20 +7,39 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Customer6;
 import model.Invoice6;
+import model.Reception6;
 import model.Service6;
 import model.ServiceDetail6;
 import model.SparePart6;
 import model.SparePartDetail6;
 import model.TechnicalStaff6;
+import model.Vehicle6;
 
 public class InvoiceDAO6 extends DAO6 {
     public InvoiceDAO6() {
         super();
     }
 
+    // Dựng chuỗi liên kết theo thiết kế: Invoice6 -> Reception6 -> Vehicle6 -> Customer6
+    private Reception6 buildReception(ResultSet rs, int customerId) throws java.sql.SQLException {
+        Customer6 cus = new Customer6();
+        cus.setId(customerId);
+        cus.setCustomerCode(rs.getString("customerCode"));
+        cus.setName(rs.getString("customerName"));
+
+        Vehicle6 veh = new Vehicle6();
+        veh.setLicensePlate(rs.getString("licensePlate"));
+        veh.setCustomer(cus);
+
+        Reception6 rec = new Reception6();
+        rec.setReceptionCode(rs.getString("receptionCode"));
+        rec.setVehicle(veh);
+        return rec;
+    }
+
     public List<Invoice6> getInvoicesByCustomer(int customerId, Date startDate, Date endDate) {
         List<Invoice6> list = new ArrayList<>();
-        String sql = "SELECT i.*, c.customerCode, m.name AS customerName "
+        String sql = "SELECT i.*, r.receptionCode, v.licensePlate, c.customerCode, m.name AS customerName "
                 + "FROM tblInvoice6 i "
                 + "JOIN tblReception6 r ON i.tblReception6id = r.id "
                 + "JOIN tblVehicle6 v ON r.tblVehicle6id = v.id "
@@ -41,11 +60,7 @@ public class InvoiceDAO6 extends DAO6 {
                 inv.setCreatedDate(rs.getDate("createdDate"));
                 inv.setTotalAmount(rs.getFloat("totalAmount"));
 
-                Customer6 cus = new Customer6();
-                cus.setId(customerId);
-                cus.setCustomerCode(rs.getString("customerCode"));
-                cus.setName(rs.getString("customerName"));
-                inv.setCustomer(cus);
+                inv.setReception(buildReception(rs, customerId));
 
                 list.add(inv);
             }
@@ -57,7 +72,7 @@ public class InvoiceDAO6 extends DAO6 {
 
     public Invoice6 getInvoiceDetail(int invoiceId) {
         Invoice6 inv = null;
-        String sqlInv = "SELECT i.*, c.customerCode, m.name AS customerName "
+        String sqlInv = "SELECT i.*, r.receptionCode, v.licensePlate, c.customerCode, m.name AS customerName "
                 + "FROM tblInvoice6 i "
                 + "JOIN tblReception6 r ON i.tblReception6id = r.id "
                 + "JOIN tblVehicle6 v ON r.tblVehicle6id = v.id "
@@ -90,10 +105,7 @@ public class InvoiceDAO6 extends DAO6 {
                 inv.setCreatedDate(rsInv.getDate("createdDate"));
                 inv.setTotalAmount(rsInv.getFloat("totalAmount"));
 
-                Customer6 cus = new Customer6();
-                cus.setCustomerCode(rsInv.getString("customerCode"));
-                cus.setName(rsInv.getString("customerName"));
-                inv.setCustomer(cus);
+                inv.setReception(buildReception(rsInv, 0));
 
                 // 2. Lấy danh sách Chi tiết Dịch vụ + Thợ kỹ thuật
                 PreparedStatement psSrv = con.prepareStatement(sqlSrv);

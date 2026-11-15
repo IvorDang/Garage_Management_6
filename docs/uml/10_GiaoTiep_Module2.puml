@@ -17,7 +17,7 @@ B --> QL : 3: hiển thị
 QL --> B : 4: chọn loại, nhập ngày,\nclick Tìm kiếm
 B --> C : 5: gọi
 C --> CS : 6: gọi
-CS --> C : 7: getThongKeKhachHang()\n8: trả DS thống kê
+CS --> C : 7: getThongKeKhachHang(),\ntrả DS thống kê
 C --> QL : 8: hiển thị DS thống kê
 QL --> C : 9: click chọn 1 khách hàng
 C --> D : 10: gọi

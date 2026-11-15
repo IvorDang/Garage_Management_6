@@ -9,7 +9,7 @@
 <body>
     <%
         // Trang chu khach hang: khach vang lai (chua dang nhap) van xem duoc
-        SystemMember6 kh = (SystemMember6) session.getAttribute("customer");
+        Customer6 kh = (Customer6) session.getAttribute("customer");
     %>
     <h2>GARAGE SYSTEM - Khách hàng</h2>
     <p>Xin chào: <b><%= (kh != null) ? kh.getName() : "Khách" %></b></p>

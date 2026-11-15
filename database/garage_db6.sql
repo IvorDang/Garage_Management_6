@@ -82,7 +82,7 @@ CREATE TABLE tblReception6 (
   checkInTime DATETIME,
   status VARCHAR(30),
   tblVehicle6id INT(10) NOT NULL,
-  tblAppointment6id INT(10) NULL,          -- NULL = khach vang lai
+  tblAppointment6id INT(10) NULL UNIQUE,   -- NULL = khach vang lai; UNIQUE: 1 lich hen -> toi da 1 phieu tiep nhan
   tblSaleStaff6id INT(10) NOT NULL,
   FOREIGN KEY (tblVehicle6id) REFERENCES tblVehicle6(id),
   FOREIGN KEY (tblAppointment6id) REFERENCES tblAppointment6(id),

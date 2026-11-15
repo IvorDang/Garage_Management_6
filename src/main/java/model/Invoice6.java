@@ -11,7 +11,7 @@ public class Invoice6 implements Serializable {
     private String invoiceCode;
     private Date createdDate;
     private float totalAmount;
-    private Customer6 customer; // Hỗ trợ hiển thị tên KH trên trang chi tiết HĐ
+    private Reception6 reception; // Invoice6 -> Reception6 -> Vehicle6 -> Customer6 (theo thiết kế)
     private List<ServiceDetail6> serviceDetails = new ArrayList<>();
     private List<SparePartDetail6> sparePartDetails = new ArrayList<>();
 
@@ -50,12 +50,12 @@ public class Invoice6 implements Serializable {
         this.totalAmount = totalAmount;
     }
 
-    public Customer6 getCustomer() {
-        return customer;
+    public Reception6 getReception() {
+        return reception;
     }
 
-    public void setCustomer(Customer6 customer) {
-        this.customer = customer;
+    public void setReception(Reception6 reception) {
+        this.reception = reception;
     }
 
     public List<ServiceDetail6> getServiceDetails() {

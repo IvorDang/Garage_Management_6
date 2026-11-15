@@ -3,6 +3,7 @@
 [*] --> HienThiGDChinhQL
 HienThiGDChinhQL --> HienThiGDChonThongKe : [chọn xem thống kê]
 HienThiGDChonThongKe --> HienThiGDChinhQL : [click Quay lại]
+HienThiGDChonThongKe --> HienThiGDChonThongKe : [ngày trống / không tồn tại /\nngày bắt đầu > ngày kết thúc:\nhiện thông báo lỗi]
 HienThiGDChonThongKe --> HienThiGDKetQuaThongKe : [nhập thời gian &\nclick Tìm kiếm]
 HienThiGDKetQuaThongKe --> HienThiGDChonThongKe : [click Quay lại]
 HienThiGDKetQuaThongKe --> HienThiGDDSHoaDon : [click chọn 1 khách hàng]

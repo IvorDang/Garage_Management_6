@@ -28,7 +28,7 @@
 
         <div id="outThongTinChung">
             <p><b>Mã HĐ:</b> <%= invoice.getInvoiceCode() %></p>
-            <p><b>Khách hàng:</b> <%= invoice.getCustomer().getName() %> (<%= invoice.getCustomer().getCustomerCode() %>)</p>
+            <p><b>Khách hàng:</b> <%= invoice.getReception().getVehicle().getCustomer().getName() %> (<%= invoice.getReception().getVehicle().getCustomer().getCustomerCode() %>)</p>
             <p><b>Ngày lập:</b> <%= new java.text.SimpleDateFormat("dd/MM/yyyy").format(invoice.getCreatedDate()) %></p>
             <p><b>Tổng tiền:</b> <%= String.format("%,.0f VNĐ", invoice.getTotalAmount()) %></p>
         </div>

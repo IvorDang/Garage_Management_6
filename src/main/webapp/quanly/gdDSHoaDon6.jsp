@@ -22,7 +22,7 @@
 
         InvoiceDAO6 invDAO = new InvoiceDAO6();
         List<Invoice6> listInvoice = invDAO.getInvoicesByCustomer(customerId, startDate, endDate);
-        String customerName = (listInvoice != null && !listInvoice.isEmpty()) ? listInvoice.get(0).getCustomer().getName() : "";
+        String customerName = (listInvoice != null && !listInvoice.isEmpty()) ? listInvoice.get(0).getReception().getVehicle().getCustomer().getName() : "";
     %>
     <h2>Danh sách hóa đơn - Khách hàng: <%= customerName %></h2>
     <p><a href="gdKetQuaThongKe6.jsp?inTuNgay=<%= tuNgayStr %>&inDenNgay=<%= denNgayStr %>">[Quay lại]</a></p>
